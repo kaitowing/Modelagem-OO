@@ -8,26 +8,36 @@ public class GaragemVagoes {
 	}
 
 	public void adicionaGaragem(Vagao v){
-		// TO DO
+		vagoes.add(v);
 	}
 
 	public boolean removeGaragem(int id){
-		// TO DO
+		for (int j = 0; j < vagoes.size(); j++) {
+			if(vagoes.get(j).getIdentificador() == id){
+				vagoes.remove(j);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public int qtdade(){
-		// TO DO
+		return vagoes.size();
 	}
 
 	public Vagao getPorPosicao(int pos){
-		// TO DO
+		return vagoes.get(pos);
 	}
 
 	public Vagao getPorId(int id){
-		// TO DO
+		for (int i = 0; i < vagoes.size(); i++) {
+			if(vagoes.get(i).getIdentificador() == id){
+				return vagoes.get(i);
+			}
+		} return null;
 	}
 	
 	public String toString(){
-		// TO DO
+		return "GaragemVagoes [vagoes=" + vagoes + "]";
 	}
 }

@@ -8,26 +8,36 @@ public class GaragemLocomotivas {
 	}
 
 	public void adicionaGaragem(Locomotiva l){
-		// TO DO
+		locomotivas.add(l);
 	}
 
 	public boolean removeGaragem(int id){
-		// TO DO
+		for (int j = 0; j < locomotivas.size(); j++) {
+			if(locomotivas.get(j).getIdentificador() == id){
+				locomotivas.remove(j);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public int qtdade(){
-		// TO DO
+		return locomotivas.size();
 	}
 
 	public Locomotiva getPorPosicao(int pos){
-		// TO DO
+		return locomotivas.get(pos);
 	}
 
 	public Locomotiva getPorId(int id){
-		// TO DO
+		for (int i = 0; i < locomotivas.size(); i++) {
+			if(locomotivas.get(i).getIdentificador() == id){
+				return locomotivas.get(i);
+			}
+		} return null;
 	}
 
 	public String toString(){
-		// TO DO
+		return "GaragemLocomotivas [locomotivas=" + locomotivas + "]";
 	}
 }
