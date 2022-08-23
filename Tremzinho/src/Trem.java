@@ -60,28 +60,47 @@ public class Trem {
     private double pesoAtualDoTrem() {
 		double pesoAtual = 0;
 		for(Vagao vagao : vagoes){
-				pesoAtual += vagao.getCapacidadeCarga();
+			pesoAtual += vagao.getCapacidadeCarga();
         }
 		return pesoAtual;
     }
 
     public boolean engataLocomotiva(Locomotiva locomotiva) {
-        // TO DO
+		if(vagoes.size() > 0){
+			return false;
+		}else{
+			locomotivas.add(locomotiva);
+			return true;
+		}
     }
 
     public boolean engataVagao(Vagao vagao) {
-        // TO DO
+		if(locomotivas.size() == 0){
+			return false;
+		}else{
+			vagoes.add(vagao);
+			return true;
+		}
     }
 
     public boolean desengataLocomotiva() {
-        // TO DO
+		if(locomotivas.size() > 1){
+			locomotivas.remove(locomotivas.size()-1);
+			return true;
+		}
+		return false;
     }
 
     public boolean desengataVagao() {
-        // TO DO
+		if(vagoes.size() > 0){
+			vagoes.remove(vagoes.size()-1);
+			return true;
+		}
+		return false;
     }
 
-    public String toString(){
-        // TO DO
-    }
+    @Override
+	public String toString() {
+		return "Trem [identificador=" + identificador + ", locomotivas=" + locomotivas + ", vagoes=" + vagoes + "]";
+	}
 }
