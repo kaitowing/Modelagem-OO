@@ -38,6 +38,6 @@ public class GaragemLocomotivas {
 	}
 
 	public String toString(){
-		return "GaragemLocomotivas [locomotivas=" + locomotivas + "]";
+		return "Locomotivas na garagem [locomotivas=" + locomotivas + "]";
 	}
 }
