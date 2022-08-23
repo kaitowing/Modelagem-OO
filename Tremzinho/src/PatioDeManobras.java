@@ -8,19 +8,27 @@ public class PatioDeManobras {
 	}
 
 	public void adicionaPatio(Trem t){
-		// TO DO
+		trens.add(t);
 	}
 
 	public boolean removePatio(int id){
-		// TO DO
+		if(trens.size() > 0){
+			for(Trem trem : trens){
+				if(trem.getIdentificador() == id){
+					trens.remove(trem);
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public int qtdade(){
-		// TO DO
+		return trens.size();
 	}
 
 	public Trem getPorPosicao(int pos){
-		// TO DO
+		return trens.get(pos);
 	}
 
 	public Trem getPorId(int id){
