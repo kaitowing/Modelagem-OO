@@ -6,10 +6,38 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class App {
+
     public GaragemLocomotivas garagemL = new GaragemLocomotivas();
     public GaragemVagoes garagemV = new GaragemVagoes();
     public PatioDeManobras patio = new PatioDeManobras();
 
+    public void editTrem(int opcao, int idTrem){
+        Scanner sc = new Scanner(System.in);
+        switch(opcao){
+            case 1:
+                if (patio.getPorId(idTrem) == null){
+                    System.out.println("Trem não existe.");
+                }else{
+                    if(patio.getPorId(idTrem).getQtdadeVagoes() > 0){
+                        System.out.println("Não é possível adicionar locomotiva atrás de um vagão.");
+                    }else{
+                        System.out.println("Digite o ID da locomotiva a ser adicionada");
+                        int idLoc = Integer.parseInt(sc.nextLine());
+                        patio.getPorId(idTrem).engataLocomotiva(garagemL.getPorId(idLoc));
+                    }
+                }
+
+            break;
+            case 2:
+            break;
+            case 3:
+            break;
+            case 4:
+            break;
+            case 5:
+            break;
+        }
+    }
     public void main(String[] args) throws Exception {
         
 
@@ -55,30 +83,7 @@ public class App {
                 if(opcaoEdicao == 6){
                     break;
                 }else{
-                    switch(opcaoEdicao){
-                        case 1:
-                            if (patio.getPorId(idTrem) == null){
-                                System.out.println("Trem não existe.");
-                            }else{
-                                if(patio.getPorId(idTrem).getQtdadeVagoes() > 0){
-                                    System.out.println("Não é possível adicionar locomotiva atrás de um vagão.");
-                                }else{
-                                    System.out.println("Digite o ID da locomotiva a ser adicionada");
-                                    idLoc = Integer.parseInt(sc.nextLine());
-                                    patio.getPorId(idTrem).engataLocomotiva(garagemL.getPorId(idLoc));
-                                }
-                            }
-            
-                        break;
-                        case 2:
-                        break;
-                        case 3:
-                        break;
-                        case 4:
-                        break;
-                        case 5:
-                        break;
-                    }
+                    editTrem(opcaoEdicao, idTrem);
                 }
             break;
             case 3:
