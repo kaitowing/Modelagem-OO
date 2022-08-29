@@ -8,24 +8,38 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class App {
-    /*public static void editTrem(int opcao, int idTrem){
+
+    public static void editTrem(int opcao, int idTrem, PatioDeManobras patio, GaragemLocomotivas garagemL, GaragemVagoes garagemV){
         Scanner sc = new Scanner(System.in);
+        Trem trenzinho = patio.getPorId(idTrem);
         switch(opcao){
             case 1:
-                if (patio.getPorId(idTrem) == null){
+                if (trenzinho == null){
                     System.out.println("Trem não existe.");
                 }else{
-                    if(patio.getPorId(idTrem).getQtdadeVagoes() > 0){
+                    if(trenzinho.getQtdadeVagoes() > 0){
                         System.out.println("Não é possível adicionar locomotiva atrás de um vagão.");
                     }else{
                         System.out.println("Digite o ID da locomotiva a ser adicionada");
                         int idLoc = Integer.parseInt(sc.nextLine());
-                        patio.getPorId(idTrem).engataLocomotiva(garagemL.getPorId(idLoc));
+                        trenzinho.engataLocomotiva(garagemL.getPorId(idLoc));
                     }
                 }
-
             break;
             case 2:
+                if (trenzinho == null){
+                    System.out.println("Trem não existe.");
+                }else{
+                    System.out.println("Digite o ID do vagão a ser adicionado.");
+                    int idVag = Integer.parseInt(sc.nextLine());
+                    if(trenzinho.getQtdadeVagoes() >= trenzinho.maxVagoesNoTrem()
+                    || trenzinho.pesoAtualDoTrem() + garagemV.getPorId(idVag).getCapacidadeCarga() > trenzinho.pesoMaxNoTrem()
+                    ){
+                        System.out.println("Não é possível adicionar um vagão neste trem.");
+                    }else{
+                        trenzinho.engataVagao(garagemV.getPorId(idVag));
+                    }
+                }
             break;
             case 3:
             break;
@@ -34,7 +48,7 @@ public class App {
             case 5:
             break;
         }
-    }*/
+    }
     public static void main(String[] args) throws Exception {
 
         GaragemLocomotivas garagemL = new GaragemLocomotivas();

@@ -31,7 +31,7 @@ public class Trem {
         return vagoes.get(posicao);
     }
 
-    private int maxVagoesNoTrem() {
+    public int maxVagoesNoTrem() {
         int totalVagoes = 0;
         for(Locomotiva locomotiva : locomotivas){
             totalVagoes += locomotiva.getQtdadeMaxVagoes();
@@ -45,7 +45,7 @@ public class Trem {
         return totalVagoes;
     }
 
-    private double pesoMaxNoTrem() {
+    public double pesoMaxNoTrem() {
 		double pesoMaximo = 0;
 		int totalVagoes = maxVagoesNoTrem();
 		for(Vagao vagao : vagoes){
@@ -57,7 +57,7 @@ public class Trem {
 		return pesoMaximo;
     }
 
-    private double pesoAtualDoTrem() {
+    public double pesoAtualDoTrem() {
 		double pesoAtual = 0;
 		for(Vagao vagao : vagoes){
 			pesoAtual += vagao.getCapacidadeCarga();
