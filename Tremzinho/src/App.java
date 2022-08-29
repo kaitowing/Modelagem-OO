@@ -1,5 +1,7 @@
+import java.util.Random;
 import java.util.Scanner;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -39,6 +41,8 @@ public class App {
         }
     }
     public void main(String[] args) throws Exception {
+
+        
         
 
         System.out.println("BEM VINDO AO SISTEMA DE LOCOMOTIVAS");
@@ -98,7 +102,7 @@ public class App {
 
     }
 
-    public void carregaLocomotiva(){
+    public static void carregaLocomotiva(GaragemLocomotivas garagemL){
         String currDir = Paths.get("").toAbsolutePath().toString();
         String nameComplete = currDir+"\\"+"locomotiva.dat";
         Path path = Paths.get(nameComplete);
@@ -119,7 +123,7 @@ public class App {
         }
     }
 
-    public void carregaVagao(){
+    public static void carregaVagao(GaragemVagoes garagemV){
         String currDir = Paths.get("").toAbsolutePath().toString();
         String nameComplete = currDir+"\\"+"vagao.dat";
         Path path = Paths.get(nameComplete);
@@ -136,6 +140,43 @@ public class App {
             }
         }catch (IOException x){
             System.err.format("Erro de E/S: %s%n", x);
+        }
+    }
+
+    public static void writeL(){
+        Random sorteia = new Random();
+        String currDir = Paths.get("").toAbsolutePath().toString();
+        String nameComplete = currDir+"\\"+"locomotiva.dat";
+        Path path = Paths.get(nameComplete);
+
+        try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(path, StandardCharsets.UTF_8))){
+            for(int i=0;i<3;i++){
+                int nro = sorteia.nextInt(100,200);
+                writer.print(nro+";");
+                nro = sorteia.nextInt(50,90);
+                writer.print(nro+";");
+                nro = sorteia.nextInt(10,20);
+                writer.print(nro+"\n");
+            }
+        }catch (IOException x){
+        System.err.format("Erro de E/S: %s%n", x);
+        }
+    }
+    public static void writeV(){
+        Random sorteia = new Random();
+        String currDir = Paths.get("").toAbsolutePath().toString();
+        String nameComplete = currDir+"\\"+"vagao.dat";
+        Path path = Paths.get(nameComplete);
+
+        try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(path, StandardCharsets.UTF_8))){
+            for(int i=0;i<3;i++){
+                int nro = sorteia.nextInt(100,200);
+                writer.print(nro+";");
+                nro = sorteia.nextInt(5,15);
+                writer.print(nro+"\n");
+            }
+        }catch (IOException x){
+        System.err.format("Erro de E/S: %s%n", x);
         }
     }
 }
