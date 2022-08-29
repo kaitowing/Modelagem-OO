@@ -8,12 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class App {
-
-    public GaragemLocomotivas garagemL = new GaragemLocomotivas();
-    public GaragemVagoes garagemV = new GaragemVagoes();
-    public PatioDeManobras patio = new PatioDeManobras();
-
-    public void editTrem(int opcao, int idTrem){
+    /*public static void editTrem(int opcao, int idTrem){
         Scanner sc = new Scanner(System.in);
         switch(opcao){
             case 1:
@@ -39,9 +34,25 @@ public class App {
             case 5:
             break;
         }
-    }
-    public void main(String[] args) throws Exception {
+    }*/
+    public static void main(String[] args) throws Exception {
 
+        GaragemLocomotivas garagemL = new GaragemLocomotivas();
+        GaragemVagoes garagemV = new GaragemVagoes();
+        PatioDeManobras patio = new PatioDeManobras();
+    
+        Scanner sc = new Scanner(System.in);
+
+        writeL();
+        writeV();
+
+        carregaLocomotiva(garagemL);
+        carregaVagao(garagemV);
+
+        for (int i = 0; i < garagemV.qtdade(); i++) {
+            System.out.println(garagemV.getPorPosicao(i).getIdentificador());
+        }
+        int pog = sc.nextInt();
         
         
 
@@ -52,8 +63,6 @@ public class App {
         System.out.println("3- LISTAR TODOS OS TRENS");
         System.out.println("4- DESFAZER UM TREM");
         System.out.println("5- ENCERRAR O PROGRAMA");
-
-        Scanner sc = new Scanner(System.in);
 
         int opcao = Integer.parseInt(sc.nextLine());
 
@@ -87,7 +96,7 @@ public class App {
                 if(opcaoEdicao == 6){
                     break;
                 }else{
-                    editTrem(opcaoEdicao, idTrem);
+                    
                 }
             break;
             case 3:
