@@ -38,6 +38,6 @@ public class GaragemVagoes {
 	}
 	
 	public String toString(){
-		return "Vagões na garagem [vagões=" + vagoes + "]";
+		return "Garagem de Vagoes [vagoes=" + vagoes + "]";
 	}
 }
