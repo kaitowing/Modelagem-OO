@@ -11,37 +11,46 @@ public class App {
 
     public static void editTrem(int opcao, int idTrem, PatioDeManobras patio, GaragemLocomotivas garagemL, GaragemVagoes garagemV){
         Scanner sc = new Scanner(System.in);
-        Trem trenzinho = patio.getPorId(idTrem);
+        Trem tremEdit = patio.getPorId(idTrem);
         switch(opcao){
             case 1:
-                if (trenzinho == null){
+                if (tremEdit == null){
                     System.out.println("Trem não existe.");
                 }else{
-                    if(trenzinho.getQtdadeVagoes() > 0){
+                    if(tremEdit.getQtdadeVagoes() > 0){
                         System.out.println("Não é possível adicionar locomotiva atrás de um vagão.");
                     }else{
                         System.out.println("Digite o ID da locomotiva a ser adicionada");
                         int idLoc = Integer.parseInt(sc.nextLine());
-                        trenzinho.engataLocomotiva(garagemL.getPorId(idLoc));
+                        tremEdit.engataLocomotiva(garagemL.getPorId(idLoc));
                     }
                 }
             break;
             case 2:
-                if (trenzinho == null){
+                if (tremEdit == null){
                     System.out.println("Trem não existe.");
                 }else{
                     System.out.println("Digite o ID do vagão a ser adicionado.");
                     int idVag = Integer.parseInt(sc.nextLine());
-                    if(trenzinho.getQtdadeVagoes() >= trenzinho.maxVagoesNoTrem()
-                    || trenzinho.pesoAtualDoTrem() + garagemV.getPorId(idVag).getCapacidadeCarga() > trenzinho.pesoMaxNoTrem()
+                    if(tremEdit.getQtdadeVagoes() >= tremEdit.maxVagoesNoTrem()
+                    || tremEdit.pesoAtualDoTrem() + garagemV.getPorId(idVag).getCapacidadeCarga() > tremEdit.pesoMaxNoTrem()
                     ){
                         System.out.println("Não é possível adicionar um vagão neste trem.");
                     }else{
-                        trenzinho.engataVagao(garagemV.getPorId(idVag));
+                        tremEdit.engataVagao(garagemV.getPorId(idVag));
                     }
                 }
             break;
             case 3:
+            if (tremEdit == null){
+                System.out.println("Trem não existe.");
+            }else{
+                if(tremEdit.getQtdadeVagoes() == 0 && tremEdit.getQtdadeLocomotivas() <= 1){
+                    System.out.println("Não é possível remover o último elemento deste trem.");
+                }else{
+                    if(tremEdit.getQtdadeVagoes() == 0 && tremEdit.getQtdadeLocomotivas() > 1){}
+                }
+            }
             break;
             case 4:
             break;
