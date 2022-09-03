@@ -90,17 +90,19 @@ public class App {
         GaragemLocomotivas garagemL = new GaragemLocomotivas();
         GaragemVagoes garagemV = new GaragemVagoes();
         PatioDeManobras patio = new PatioDeManobras();
-    
+        int index,opcao = 0;
         Scanner sc = new Scanner(System.in);
-
-        writeL();
-        writeV();
+        System.out.println("BEM VINDO AO SISTEMA DE LOCOMOTIVAS");
+        System.out.println("Defina o número de Vagões:");
+        index = Integer.parseInt(sc.nextLine());
+        writeV(index);
+        System.out.println("Defina o número de Locomotivas:");
+        index = Integer.parseInt(sc.nextLine());
+        writeL(index);
 
         carregaLocomotiva(garagemL);
         carregaVagao(garagemV);    
         
-        int opcao = 0;
-        System.out.println("BEM VINDO AO SISTEMA DE LOCOMOTIVAS");
         
         do{
 
@@ -229,14 +231,14 @@ public class App {
         }
     }
 
-    public static void writeL(){
+    public static void writeL(int index){
         Random sorteia = new Random();
         String currDir = Paths.get("").toAbsolutePath().toString();
         String nameComplete = currDir+"\\"+"locomotiva.dat";
         Path path = Paths.get(nameComplete);
 
         try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(path, StandardCharsets.UTF_8))){
-            for(int i=0;i<3;i++){
+            for(int i=0;i<index;i++){
                 int nro = sorteia.nextInt(100,200);
                 writer.print(nro+";");
                 nro = sorteia.nextInt(50,90);
@@ -248,14 +250,14 @@ public class App {
         System.err.format("Erro de E/S: %s%n", x);
         }
     }
-    public static void writeV(){
+    public static void writeV(int index){
         Random sorteia = new Random();
         String currDir = Paths.get("").toAbsolutePath().toString();
         String nameComplete = currDir+"\\"+"vagao.dat";
         Path path = Paths.get(nameComplete);
 
         try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(path, StandardCharsets.UTF_8))){
-            for(int i=0;i<3;i++){
+            for(int i=0;i<index;i++){
                 int nro = sorteia.nextInt(100,200);
                 writer.print(nro+";");
                 nro = sorteia.nextInt(5,15);
