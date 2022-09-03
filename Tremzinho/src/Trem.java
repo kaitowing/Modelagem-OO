@@ -47,13 +47,12 @@ public class Trem {
 
     public double pesoMaxNoTrem() {
 		double pesoMaximo = 0;
-		int totalVagoes = maxVagoesNoTrem();
 		for(Vagao vagao : vagoes){
             if(vagao.getCapacidadeCarga() > pesoMaximo){
 				pesoMaximo = vagao.getCapacidadeCarga();
 			}
         }
-		pesoMaximo = pesoMaximo * totalVagoes;
+		pesoMaximo = pesoMaximo * maxVagoesNoTrem();
 		return pesoMaximo;
     }
 
@@ -84,8 +83,9 @@ public class Trem {
     }
 
     public boolean desengataLocomotiva() {
-		if(locomotivas.size() > 1){
-			locomotivas.remove(locomotivas.size()-1);
+      if(locomotivas.size() > 1){
+        locomotivas.get(locomotivas.size()-1).livre();
+			  locomotivas.remove(locomotivas.size()-1);
 			return true;
 		}
 		return false;
@@ -93,6 +93,7 @@ public class Trem {
 
     public boolean desengataVagao() {
 		if(vagoes.size() > 0){
+      vagoes.get(vagoes.size()-1).livre();
 			vagoes.remove(vagoes.size()-1);
 			return true;
 		}

@@ -15,6 +15,14 @@ public class PatioDeManobras {
 		if(trens.size() > 0){
 			for(Trem trem : trens){
 				if(trem.getIdentificador() == id){
+					for (int i = 0; i < trem.getQtdadeLocomotivas() + trem.getQtdadeVagoes(); i++) {
+						while(trem.getQtdadeVagoes() > 0){
+							trem.desengataVagao();
+						}
+						while(trem.getQtdadeLocomotivas() > 0){
+							trem.desengataLocomotiva();
+						}
+					}
 					trens.remove(trem);
 					return true;
 				}
