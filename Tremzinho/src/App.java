@@ -9,29 +9,58 @@ import java.nio.file.Paths;
 
 public class App {
 
+    public static boolean tremExiste(int idTrem, PatioDeManobras patio){
+        for (int i = 0; i < patio.qtdade(); i++) {
+            if(patio.getPorPosicao(i).getIdentificador() == idTrem){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean vagaoExiste(int idVag, GaragemVagoes garagemV){
+        for (int i = 0; i < garagemV.qtdade(); i++) {
+            if(garagemV.getPorPosicao(i).getIdentificador() == idVag){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean locomotivaExiste(int idLoc, GaragemLocomotivas garagemL){
+        for (int i = 0; i < garagemL.qtdade(); i++) {
+            if(garagemL.getPorPosicao(i).getIdentificador() == idLoc){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void editTrem(int opcao, int idTrem, PatioDeManobras patio, GaragemLocomotivas garagemL, GaragemVagoes garagemV){
         Scanner sc = new Scanner(System.in);
         Trem tremEdit = patio.getPorId(idTrem);
         int cont = 0;
-        switch(opcao){
-            case 1:
-                if (tremEdit == null){
-                    System.out.println("Trem não existe.");
-                }else{
+        if(!tremExiste(idTrem, patio)){
+            System.out.println("Trem não existe.");
+        }else{
+            switch(opcao){
+                case 1:
                     if(tremEdit.getQtdadeVagoes() > 0){
                         System.out.println("Não é possível adicionar locomotiva atrás de um vagão.");
                     }else{
                         System.out.println("Digite o ID da locomotiva a ser adicionada");
                         int idLoc = Integer.parseInt(sc.nextLine());
+
+                        while(!locomotivaExiste(idLoc, garagemL)){
+                            System.out.println("Locomotiva não existente, digite um id válido");
+                            idLoc = Integer.parseInt(sc.nextLine());
+                        }
+
                         tremEdit.engataLocomotiva(garagemL.getPorId(idLoc));
                         garagemL.getPorId(idLoc).setTrem(tremEdit);
                     }
-                }
-            break;
-            case 2:
-                if (tremEdit == null){
-                    System.out.println("Trem não existe.");
-                }else{
+                break;
+                case 2:
                     System.out.println("Digite o ID do vagão a ser adicionado.");
                     int idVag = Integer.parseInt(sc.nextLine());
                     if(tremEdit.getQtdadeVagoes() >= tremEdit.maxVagoesNoTrem()
@@ -39,50 +68,50 @@ public class App {
                     ){
                         System.out.println("Não é possível adicionar um vagão neste trem.");
                     }else{
+                        while(!vagaoExiste(idVag, garagemV)){
+                            System.out.println("Vagão não existente, digite um id válido");
+                            idVag = Integer.parseInt(sc.nextLine());
+                        }
                         tremEdit.engataVagao(garagemV.getPorId(idVag));
                         garagemV.getPorId(idVag).setTrem(tremEdit);
                     }
-                }
-            break;
-            case 3:
-            if (tremEdit == null){
-                System.out.println("Trem não existe.");
-            }else{
-                if(tremEdit.getQtdadeVagoes() == 0 && tremEdit.getQtdadeLocomotivas() <= 1){
-                    System.out.println("Não é possível remover o último elemento deste trem.");
-                }else{
-                    if(tremEdit.getQtdadeVagoes() == 0 && tremEdit.getQtdadeLocomotivas() > 1){
-                        tremEdit.desengataLocomotiva();
-                    }else if(tremEdit.getQtdadeVagoes() > 0){
-                        tremEdit.desengataVagao();
+                break;
+                case 3:
+                    if(tremEdit.getQtdadeVagoes() == 0 && tremEdit.getQtdadeLocomotivas() <= 1){
+                        System.out.println("Não é possível remover o último elemento deste trem.");
+                    }else{
+                        if(tremEdit.getQtdadeVagoes() == 0 && tremEdit.getQtdadeLocomotivas() > 1){
+                            tremEdit.desengataLocomotiva();
+                        }else if(tremEdit.getQtdadeVagoes() > 0){
+                            tremEdit.desengataVagao();
+                        }
                     }
-                }
+                break;
+                case 4:
+                    cont = 0;
+                    for (int i = 0; i < garagemL.qtdade(); i++) {
+                        if(garagemL.getPorPosicao(i).getTrem() == null){
+                            cont++;
+                            System.out.println(garagemL.getPorPosicao(i).toString());
+                        }
+                        if(cont == 0){
+                            System.out.println("Não há locomotivas livres");
+                        }
+                    }
+                break;
+                case 5:
+                    cont = 0;
+                    for (int i = 0; i < garagemV.qtdade(); i++) {
+                        if(garagemV.getPorPosicao(i).getTrem() == null){
+                            cont++;
+                            System.out.println(garagemV.getPorPosicao(i).toString());
+                        }
+                        if(cont == 0){
+                            System.out.println("Não há vagões livres");
+                        }
+                    }
+                break;
             }
-            break;
-            case 4:
-                cont = 0;
-                for (int i = 0; i < garagemL.qtdade(); i++) {
-                    if(garagemL.getPorPosicao(i).getTrem() == null){
-                        cont++;
-                        System.out.println(garagemL.getPorPosicao(i).toString());
-                    }
-                    if(cont == 0){
-                        System.out.println("Não há locomotivas livres");
-                    }
-                }
-            break;
-            case 5:
-                cont = 0;
-                for (int i = 0; i < garagemV.qtdade(); i++) {
-                    if(garagemV.getPorPosicao(i).getTrem() == null){
-                        cont++;
-                        System.out.println(garagemV.getPorPosicao(i).toString());
-                    }
-                    if(cont == 0){
-                        System.out.println("Não há vagões livres");
-                    }
-                }
-            break;
         }
     }
     public static void main(String[] args) throws Exception {
@@ -119,6 +148,11 @@ public class App {
                 case 1:
                     System.out.println("Informe o identificador do trem:");
                     int idTrem = Integer.parseInt(sc.nextLine());
+
+                    while(tremExiste(idTrem, patio)){
+                        System.out.println("ID já existente, digite um novo");
+                        idTrem = Integer.parseInt(sc.nextLine());
+                    }
     
                     int cont = 0;
                     for (int i = 0; i < garagemL.qtdade(); i++) {
@@ -133,6 +167,11 @@ public class App {
     
                     System.out.println("Informe o identificador da primeira locomotiva:");
                     int idLoc = Integer.parseInt(sc.nextLine());
+
+                    while(!locomotivaExiste(idLoc, garagemL)){
+                        System.out.println("Locomotiva não existe, digite um ID existente.");
+                        idLoc = Integer.parseInt(sc.nextLine());
+                    }
     
                     Trem novoTrem = new Trem(idTrem);
                     
