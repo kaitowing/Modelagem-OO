@@ -40,24 +40,28 @@ public class App {
         Scanner sc = new Scanner(System.in);
         Trem tremEdit = patio.getPorId(idTrem);
         int cont = 0;
-        if(!tremExiste(idTrem, patio)){
+        if(!tremExiste(idTrem, patio) && idTrem != -1){
             System.out.println("Trem não existe.");
         }else{
             switch(opcao){
                 case 1:
                     if(tremEdit.getQtdadeVagoes() > 0){
-                        System.out.println("Não é possível adicionar locomotiva atrás de um vagão.");
+                        System.out.println("Não é possível adicionar locomotiva.");
                     }else{
                         System.out.println("Digite o ID da locomotiva a ser adicionada");
                         int idLoc = Integer.parseInt(sc.nextLine());
-
                         while(!locomotivaExiste(idLoc, garagemL)){
                             System.out.println("Locomotiva não existente, digite um id válido");
                             idLoc = Integer.parseInt(sc.nextLine());
                         }
+                        if(garagemL.getPorId(idLoc).getTrem() == null){
 
-                        tremEdit.engataLocomotiva(garagemL.getPorId(idLoc));
-                        garagemL.getPorId(idLoc).setTrem(tremEdit);
+    
+                            tremEdit.engataLocomotiva(garagemL.getPorId(idLoc));
+                            garagemL.getPorId(idLoc).setTrem(tremEdit);
+                        }else{
+                            System.out.println("Locomotiva já engatada.");
+                        }
                     }
                 break;
                 case 2:
@@ -72,8 +76,12 @@ public class App {
                             System.out.println("Vagão não existente, digite um id válido");
                             idVag = Integer.parseInt(sc.nextLine());
                         }
-                        tremEdit.engataVagao(garagemV.getPorId(idVag));
-                        garagemV.getPorId(idVag).setTrem(tremEdit);
+                        if(garagemV.getPorId(idVag).getTrem() == null){
+                            tremEdit.engataVagao(garagemV.getPorId(idVag));
+                            garagemV.getPorId(idVag).setTrem(tremEdit);
+                        }else{
+                            System.out.println("Vagão já engatado.");
+                        }
                     }
                 break;
                 case 3:
@@ -94,9 +102,9 @@ public class App {
                             cont++;
                             System.out.println(garagemL.getPorPosicao(i).toString());
                         }
-                        if(cont == 0){
-                            System.out.println("Não há locomotivas livres");
-                        }
+                    }
+                    if(cont == 0){
+                        System.out.println("Locomotiva já utilizada.");
                     }
                 break;
                 case 5:
@@ -167,20 +175,24 @@ public class App {
     
                     System.out.println("Informe o identificador da primeira locomotiva:");
                     int idLoc = Integer.parseInt(sc.nextLine());
-
                     while(!locomotivaExiste(idLoc, garagemL)){
                         System.out.println("Locomotiva não existe, digite um ID existente.");
                         idLoc = Integer.parseInt(sc.nextLine());
                     }
-    
-                    Trem novoTrem = new Trem(idTrem);
-                    
-                    Locomotiva primLoc = garagemL.getPorId(idLoc);
-    
-                    novoTrem.engataLocomotiva(primLoc);
-                    garagemL.getPorId(idLoc).setTrem(novoTrem);
-    
-                    patio.adicionaPatio(novoTrem);
+                    if(garagemL.getPorId(idLoc).getTrem()==null){
+        
+                        Trem novoTrem = new Trem(idTrem);
+                        
+                        Locomotiva primLoc = garagemL.getPorId(idLoc);
+        
+                        novoTrem.engataLocomotiva(primLoc);
+                        garagemL.getPorId(idLoc).setTrem(novoTrem);
+        
+                        patio.adicionaPatio(novoTrem);
+                    }else{
+                        System.out.println("Locomotiva já engatada.");
+                    }
+
                 break;
                 case 2:
                 System.out.println("Digite a opção de edição:");
@@ -195,8 +207,11 @@ public class App {
                 if(opcaoEdicao == 6){
                     break;
                 }else{
+                    idTrem = -1;
+                    if(opcaoEdicao == 1 || opcaoEdicao == 2 || opcaoEdicao == 3){
                         System.out.println("Informe o identificador do trem a ser editado:");
                         idTrem = Integer.parseInt(sc.nextLine());
+                    }
                         editTrem(opcaoEdicao, idTrem, patio, garagemL, garagemV);
                     }
                 break;
@@ -215,7 +230,6 @@ public class App {
                 case 4:
                     System.out.println("Informe o identificador do trem:");
                     idTrem = Integer.parseInt(sc.nextLine());
-    
                     patio.removePatio(idTrem);
                 break;
                 case 5:

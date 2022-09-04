@@ -15,14 +15,13 @@ public class PatioDeManobras {
 		if(trens.size() > 0){
 			for(Trem trem : trens){
 				if(trem.getIdentificador() == id){
-					for (int i = 0; i < trem.getQtdadeLocomotivas() + trem.getQtdadeVagoes(); i++) {
-						while(trem.getQtdadeVagoes() > 0){
-							trem.desengataVagao();
-						}
-						while(trem.getQtdadeLocomotivas() > 0){
-							trem.desengataLocomotiva();
-						}
+					while(trem.getQtdadeVagoes() > 0){
+						trem.desengataVagao();
 					}
+					while(trem.getQtdadeLocomotivas() > 1){
+						trem.desengataLocomotiva();
+					}
+					trem.getLocomotiva(0).setLivre();
 					trens.remove(trem);
 					return true;
 				}

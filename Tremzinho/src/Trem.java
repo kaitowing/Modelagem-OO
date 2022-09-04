@@ -84,7 +84,7 @@ public class Trem {
 
     public boolean desengataLocomotiva() {
       if(locomotivas.size() > 1){
-        locomotivas.get(locomotivas.size()-1).livre();
+        locomotivas.get(locomotivas.size()-1).setLivre();
 			  locomotivas.remove(locomotivas.size()-1);
 			return true;
 		}
@@ -93,7 +93,7 @@ public class Trem {
 
     public boolean desengataVagao() {
 		if(vagoes.size() > 0){
-      vagoes.get(vagoes.size()-1).livre();
+      vagoes.get(vagoes.size()-1).setLivre();
 			vagoes.remove(vagoes.size()-1);
 			return true;
 		}

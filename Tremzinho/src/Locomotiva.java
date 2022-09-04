@@ -27,6 +27,10 @@ public class Locomotiva {
 		return trem;
 	}
 
+	public void setLivre(){
+		this.trem = null;
+	}
+
 	public boolean livre(){
 		return trem == null;
 	}
