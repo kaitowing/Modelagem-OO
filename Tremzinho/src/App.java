@@ -289,15 +289,16 @@ public class App {
         String currDir = Paths.get("").toAbsolutePath().toString();
         String nameComplete = currDir+"\\"+"locomotiva.dat";
         Path path = Paths.get(nameComplete);
+        int nro = 100, nro2;
 
         try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(path, StandardCharsets.UTF_8))){
             for(int i=0;i<index;i++){
-                int nro = sorteia.nextInt(100,200);
+                nro += 1;
                 writer.print(nro+";");
-                nro = sorteia.nextInt(50,90);
-                writer.print(nro+";");
-                nro = sorteia.nextInt(10,20);
-                writer.print(nro+"\n");
+                nro2 = sorteia.nextInt(50,90);
+                writer.print(nro2+";");
+                nro2 = sorteia.nextInt(10,20);
+                writer.print(nro2+"\n");
             }
         }catch (IOException x){
         System.err.format("Erro de E/S: %s%n", x);
@@ -308,13 +309,14 @@ public class App {
         String currDir = Paths.get("").toAbsolutePath().toString();
         String nameComplete = currDir+"\\"+"vagao.dat";
         Path path = Paths.get(nameComplete);
+        int nro =100, nro2;
 
         try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(path, StandardCharsets.UTF_8))){
             for(int i=0;i<index;i++){
-                int nro = sorteia.nextInt(100,200);
+                nro += 1;
                 writer.print(nro+";");
-                nro = sorteia.nextInt(5,15);
-                writer.print(nro+"\n");
+                nro2 = sorteia.nextInt(5,15);
+                writer.print(nro2+"\n");
             }
         }catch (IOException x){
         System.err.format("Erro de E/S: %s%n", x);
