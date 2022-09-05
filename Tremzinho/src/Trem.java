@@ -34,34 +34,38 @@ public class Trem {
     public int maxVagoesNoTrem() {
         int totalVagoes = 0;
         for(Locomotiva locomotiva : locomotivas){
-            totalVagoes += locomotiva.getQtdadeMaxVagoes();
+            totalVagoes = locomotiva.getQtdadeMaxVagoes() + totalVagoes;
         }
 
         // for(int i = 0; i < locomotivas.size(); i++){
         //     totalVagoes += locomotivas.get(i).getQtdadeMaxVagoes();
         // }
-
-        totalVagoes = (int)(totalVagoes * (0.1 * (locomotivas.size()-1)));
+        
+        if(locomotivas.size() != 1){
+          totalVagoes = (int)(totalVagoes * (1 - (0.1 * (locomotivas.size()-1))));
+        }
+        
         return totalVagoes;
     }
 
     public double pesoMaxNoTrem() {
-		double pesoMaximo = 0;
-		for(Vagao vagao : vagoes){
-            if(vagao.getCapacidadeCarga() > pesoMaximo){
-				pesoMaximo = vagao.getCapacidadeCarga();
-			}
-        }
-		pesoMaximo = pesoMaximo * maxVagoesNoTrem();
-		return pesoMaximo;
+		  double pesoMaximo = 0;
+
+      for(Locomotiva locomotiva : locomotivas){
+        pesoMaximo += locomotiva.getPesoMaximo();
+      }
+
+		  return pesoMaximo;
     }
 
     public double pesoAtualDoTrem() {
-		double pesoAtual = 0;
-		for(Vagao vagao : vagoes){
-			pesoAtual += vagao.getCapacidadeCarga();
-        }
-		return pesoAtual;
+		  double pesoAtual = 0;
+
+		  for(Vagao vagao : vagoes){
+			  pesoAtual += vagao.getCapacidadeCarga();
+      }
+      
+		  return pesoAtual;
     }
 
     public boolean engataLocomotiva(Locomotiva locomotiva) {
