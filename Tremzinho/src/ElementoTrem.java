@@ -1,6 +1,6 @@
 public abstract class ElementoTrem {
-    private int identificador;
-	private Trem trem;
+    protected int identificador;
+	protected Trem trem;
 
     public ElementoTrem(int identificador) {
 		this.identificador = identificador;

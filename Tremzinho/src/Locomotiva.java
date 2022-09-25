@@ -17,7 +17,11 @@ public class Locomotiva extends ElementoTrem{
 	}
 	@Override
 	public String toString() {
-		return "Locomotiva [trem=" + getTrem() + ", identificador=" + getIdentificador() + ", pesoMaximo="
-				+ pesoMaximo + ", qtdadeMaxVagoes=" + qtdadeMaxVagoes + "]";
+		if (livre()){
+			return "Locomotiva [LIVRE, identificador=" + identificador + ", pesoMaximo="
+			+ pesoMaximo + ", qtdadeMaxVagoes=" + qtdadeMaxVagoes + "]";
+		}
+		return "Locomotiva [Engatada no trem=" + trem.getIdentificador() + ", identificador=" + identificador + ", pesoMaximo="
+			+ pesoMaximo + ", qtdadeMaxVagoes=" + qtdadeMaxVagoes + "]";
 	}
 }
