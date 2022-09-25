@@ -18,25 +18,25 @@ public class App {
         return false;
     }
 
-    public static boolean vagaoExiste(int idVag, GaragemVagoes garagemV){
-        for (int i = 0; i < garagemV.qtdade(); i++) {
-            if(garagemV.getPorPosicao(i).getIdentificador() == idVag){
+    public static boolean vagaoExiste(int idVag, Garagem garagem){
+        for (int i = 0; i < garagem.qtdade(); i++) {
+            if(garagem.getPorPosicao(i).getIdentificador() == idVag){
                 return true;
             }
         }
         return false;
     }
 
-    public static boolean locomotivaExiste(int idLoc, GaragemLocomotivas garagemL){
-        for (int i = 0; i < garagemL.qtdade(); i++) {
-            if(garagemL.getPorPosicao(i).getIdentificador() == idLoc){
+    public static boolean locomotivaExiste(int idLoc, Garagem garagem){
+        for (int i = 0; i < garagem.qtdade(); i++) {
+            if(garagem.getPorPosicao(i).getIdentificador() == idLoc){
                 return true;
             }
         }
         return false;
     }
 
-    public static void editTrem(int opcao, int idTrem, PatioDeManobras patio, GaragemLocomotivas garagemL, GaragemVagoes garagemV){
+    public static void editTrem(int opcao, int idTrem, PatioDeManobras patio, Garagem garagem){
         Scanner sc = new Scanner(System.in);
         Trem tremEdit = patio.getPorId(idTrem);
         int cont = 0;
@@ -50,17 +50,15 @@ public class App {
                     }else{
                         System.out.println("Digite o ID da locomotiva a ser adicionada");
                         int idLoc = Integer.parseInt(sc.nextLine());
-                        while(!locomotivaExiste(idLoc, garagemL)){
+                        while(!locomotivaExiste(idLoc, garagem)){
                             System.out.println("Locomotiva não existente, digite um id válido");
                             idLoc = Integer.parseInt(sc.nextLine());
                         }
-                        if(garagemL.getPorId(idLoc).getTrem() == null){
-
-    
-                            tremEdit.engataLocomotiva(garagemL.getPorId(idLoc));
-                            garagemL.getPorId(idLoc).setTrem(tremEdit);
+                        if((garagem.getPorId(idLoc).getTrem() == null) && (garagem.getPorId(idLoc) instanceof Locomotiva)){
+                            tremEdit.engataLocomotiva(garagem.getPorId(idLoc));
+                            garagem.getPorId(idLoc).setTrem(tremEdit);
                         }else{
-                            System.out.println("Locomotiva já engatada.");
+                            System.out.println("Não foi possível engatar.");
                         }
                     }
                 break;
@@ -68,17 +66,17 @@ public class App {
                     System.out.println("Digite o ID do vagão a ser adicionado.");
                     int idVag = Integer.parseInt(sc.nextLine());
                     if(tremEdit.getQtdadeVagoes() >= tremEdit.maxVagoesNoTrem()
-                    || tremEdit.pesoAtualDoTrem() + garagemV.getPorId(idVag).getCapacidadeCarga() > tremEdit.pesoMaxNoTrem()
+                    || tremEdit.pesoAtualDoTrem() + ((Vagao) garagem.getPorId(idVag)).getCapacidadeCarga() > tremEdit.pesoMaxNoTrem()
                     ){
                         System.out.println("Não é possível adicionar um vagão neste trem.");
                     }else{
-                        while(!vagaoExiste(idVag, garagemV)){
+                        while(!vagaoExiste(idVag, garagem)){
                             System.out.println("Vagão não existente, digite um id válido");
                             idVag = Integer.parseInt(sc.nextLine());
                         }
-                        if(garagemV.getPorId(idVag).getTrem() == null){
-                            tremEdit.engataVagao(garagemV.getPorId(idVag));
-                            garagemV.getPorId(idVag).setTrem(tremEdit);
+                        if(garagem.getPorId(idVag).getTrem() == null){
+                            tremEdit.engataVagao(garagem.getPorId(idVag));
+                            garagem.getPorId(idVag).setTrem(tremEdit);
                         }else{
                             System.out.println("Vagão já engatado.");
                         }
@@ -97,10 +95,10 @@ public class App {
                 break;
                 case 4:
                     cont = 0;
-                    for (int i = 0; i < garagemL.qtdade(); i++) {
-                        if(garagemL.getPorPosicao(i).getTrem() == null){
+                    for (int i = 0; i < garagem.qtdade(); i++) {
+                        if(garagem.getPorPosicao(i).getTrem() == null){
                             cont++;
-                            System.out.println(garagemL.getPorPosicao(i).toString());
+                            System.out.println(garagem.getPorPosicao(i).toString());
                         }
                     }
                     if(cont == 0){
@@ -109,10 +107,10 @@ public class App {
                 break;
                 case 5:
                     cont = 0;
-                    for (int i = 0; i < garagemV.qtdade(); i++) {
-                        if(garagemV.getPorPosicao(i).getTrem() == null){
+                    for (int i = 0; i < garagem.qtdade(); i++) {
+                        if(garagem.getPorPosicao(i).getTrem() == null){
                             cont++;
-                            System.out.println(garagemV.getPorPosicao(i).toString());
+                            System.out.println(garagem.getPorPosicao(i).toString());
                         }
                         if(cont == 0){
                             System.out.println("Não há vagões livres");
@@ -124,8 +122,7 @@ public class App {
     }
     public static void main(String[] args) throws Exception {
 
-        GaragemLocomotivas garagemL = new GaragemLocomotivas();
-        GaragemVagoes garagemV = new GaragemVagoes();
+        Garagem garagem = new Garagem();
         PatioDeManobras patio = new PatioDeManobras();
         int index,opcao = 0;
         Scanner sc = new Scanner(System.in);
@@ -137,8 +134,8 @@ public class App {
         index = Integer.parseInt(sc.nextLine());
         writeL(index);
 
-        carregaLocomotiva(garagemL);
-        carregaVagao(garagemV);    
+        carregaLocomotiva(garagem);
+        carregaVagao(garagem);    
         
         
         do{
@@ -163,10 +160,10 @@ public class App {
                     }
     
                     int cont = 0;
-                    for (int i = 0; i < garagemL.qtdade(); i++) {
-                        if(garagemL.getPorPosicao(i).getTrem() == null){
+                    for (int i = 0; i < garagem.qtdade(); i++) {
+                        if(garagem.getPorPosicao(i).getTrem() == null){
                             cont++;
-                            System.out.println(garagemL.getPorPosicao(i).toString());
+                            System.out.println(garagem.getPorPosicao(i).toString());
                         }
                         if(cont == 0){
                             System.out.println("Não há locomotivas livres");
@@ -175,18 +172,18 @@ public class App {
     
                     System.out.println("Informe o identificador da primeira locomotiva:");
                     int idLoc = Integer.parseInt(sc.nextLine());
-                    while(!locomotivaExiste(idLoc, garagemL)){
+                    while(!locomotivaExiste(idLoc, garagem)){
                         System.out.println("Locomotiva não existe, digite um ID existente.");
                         idLoc = Integer.parseInt(sc.nextLine());
                     }
-                    if(garagemL.getPorId(idLoc).getTrem()==null){
+                    if((garagem.getPorId(idLoc).getTrem()==null) && (garagem.getPorId(idLoc) instanceof Locomotiva)){
         
                         Trem novoTrem = new Trem(idTrem);
                         
-                        Locomotiva primLoc = garagemL.getPorId(idLoc);
+                        Locomotiva primLoc = (Locomotiva) garagem.getPorId(idLoc);
         
                         novoTrem.engataLocomotiva(primLoc);
-                        garagemL.getPorId(idLoc).setTrem(novoTrem);
+                        garagem.getPorId(idLoc).setTrem(novoTrem);
         
                         patio.adicionaPatio(novoTrem);
                     }else{
@@ -212,7 +209,7 @@ public class App {
                         System.out.println("Informe o identificador do trem a ser editado:");
                         idTrem = Integer.parseInt(sc.nextLine());
                     }
-                        editTrem(opcaoEdicao, idTrem, patio, garagemL, garagemV);
+                        editTrem(opcaoEdicao, idTrem, patio, garagem);
                     }
                 break;
                 case 3:
@@ -243,7 +240,7 @@ public class App {
 
     }
 
-    public static void carregaLocomotiva(GaragemLocomotivas garagemL){
+    public static void carregaLocomotiva(Garagem garagem){
         String currDir = Paths.get("").toAbsolutePath().toString();
         String nameComplete = currDir+"\\"+"locomotiva.dat";
         Path path = Paths.get(nameComplete);
@@ -257,14 +254,14 @@ public class App {
                 double pesoMaximo = Double.parseDouble(dados[1]);
                 int qtdadeMaxVagoes = Integer.parseInt(dados[2]);
                 Locomotiva l = new Locomotiva(identificador,pesoMaximo,qtdadeMaxVagoes);
-                garagemL.adicionaGaragem(l);
+                garagem.adicionaGaragem(l);
             }
         }catch (IOException x){
             System.err.format("Erro de E/S: %s%n", x);
         }
     }
 
-    public static void carregaVagao(GaragemVagoes garagemV){
+    public static void carregaVagao(Garagem garagem){
         String currDir = Paths.get("").toAbsolutePath().toString();
         String nameComplete = currDir+"\\"+"vagao.dat";
         Path path = Paths.get(nameComplete);
@@ -277,7 +274,7 @@ public class App {
                 int identificador = Integer.parseInt(dados[0]);
                 double capacidadeCarga = Double.parseDouble(dados[1]);
                 Vagao v = new Vagao(identificador, capacidadeCarga);
-                garagemV.adicionaGaragem(v);
+                garagem.adicionaGaragem(v);
             }
         }catch (IOException x){
             System.err.format("Erro de E/S: %s%n", x);

@@ -2,8 +2,8 @@ import java.util.ArrayList;
 
 public class Trem {
     private int identificador;
-    private ArrayList<Vagao> vagoes;
     private ArrayList<Locomotiva> locomotivas;
+    private ArrayList<Vagao> vagoes;
 
     public Trem(int identificador){
         this.identificador = identificador;
@@ -20,7 +20,11 @@ public class Trem {
     }
 
     public Locomotiva getLocomotiva(int posicao) {
+      if(posicao >= 0 && posicao < locomotivas.size()){
         return locomotivas.get(posicao);
+      }else{
+        return null;
+      }
     }
 
     public int getQtdadeVagoes() {
@@ -28,7 +32,11 @@ public class Trem {
     }
 
     public Vagao getVagao(int posicao) {
+      if (posicao >= 0 && posicao < vagoes.size()) {
         return vagoes.get(posicao);
+      } else {
+        return null;
+      }
     }
 
     public int maxVagoesNoTrem() {
@@ -68,20 +76,20 @@ public class Trem {
 		  return pesoAtual;
     }
 
-    public boolean engataLocomotiva(Locomotiva locomotiva) {
+    public boolean engataLocomotiva(ElementoTrem elementoTrem) {
 		if(vagoes.size() > 0){
 			return false;
 		}else{
-			locomotivas.add(locomotiva);
+			locomotivas.add((Locomotiva) elementoTrem);
 			return true;
 		}
     }
 
-    public boolean engataVagao(Vagao vagao) {
+    public boolean engataVagao(ElementoTrem elementoTrem) {
 		if(locomotivas.size() == 0){
 			return false;
 		}else{
-			vagoes.add(vagao);
+			vagoes.add((Vagao) elementoTrem);
 			return true;
 		}
     }

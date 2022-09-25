@@ -1,12 +1,11 @@
-public class Vagao {
+public class Vagao extends ElementoTrem{
 	private int identificador;
 	private double capacidadeCarga;
-	private Trem trem;
 
 	public Vagao(int identificador, double capacidadeCarga) {
+		super(identificador);
 		this.identificador = identificador;
 		this.capacidadeCarga = capacidadeCarga;
-		this.trem = null;
 	}
 
 	public int getIdentificador() {
@@ -16,28 +15,9 @@ public class Vagao {
 	public double getCapacidadeCarga() {
 		return capacidadeCarga;
 	}
-
-	public Trem getTrem() {
-		return trem;
-	}
-
-	public void setLivre(){
-		this.trem = null;
-	}
-
-	public boolean livre(){
-		return trem == null;
-	}
-
-	public void setTrem(Trem trem) {
-		this.trem = trem;
-	}
-
 	@Override
 	public String toString() {
-		if (livre()){
-			return "Vagao [LIVRE, capacidadeCarga=" + capacidadeCarga + ", identificador=" + identificador + "]";
-		}
-		return "Vagao [Engatado no trem: "+trem.getIdentificador()+", capacidadeCarga=" + capacidadeCarga + ", identificador="+ identificador + "]";
-	}
+        return "Vagao [capacidadeCarga=" + capacidadeCarga + ", trem=" + getTrem() + ", identificador="
+        + identificador + "]";
+    }
 }
