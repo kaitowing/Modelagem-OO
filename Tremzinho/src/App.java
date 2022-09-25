@@ -52,6 +52,10 @@ public class App {
                     }else{
                         System.out.println("Digite o ID da locomotiva a ser adicionada");
                         int idLoc = Integer.parseInt(sc.nextLine());
+                        if(idLoc < 501){
+                            System.out.println("Locomotiva não existente, digite um id válido");
+                            break;
+                        }
                         while(!locomotivaExiste(idLoc, garagem)){
                             System.out.println("Locomotiva não existente, digite um id válido");
                             idLoc = Integer.parseInt(sc.nextLine());
@@ -67,6 +71,11 @@ public class App {
                 case 2:
                     System.out.println("Digite o ID do vagão a ser adicionado.");
                     int idVag = Integer.parseInt(sc.nextLine());
+
+                    if(idVag < 501){
+                        System.out.println("Vagão não existente, digite um id válido");
+                        break;
+                    }
                     if(tremEdit.getQtdadeVagoes() >= tremEdit.maxVagoesNoTrem()
                     || tremEdit.pesoAtualDoTrem() + ((Vagao) garagem.getPorId(idVag)).getCapacidadeCarga() > tremEdit.pesoMaxNoTrem()
                     && garagem.getPorId(idVag) instanceof Vagao
