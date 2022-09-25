@@ -1,5 +1,5 @@
 public class Vagao extends ElementoTrem{
-	private int identificador;
+	protected int identificador;
 	private double capacidadeCarga;
 
 	public Vagao(int identificador, double capacidadeCarga) {
