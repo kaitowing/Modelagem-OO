@@ -21,7 +21,7 @@ public class App {
     public static boolean vagaoExiste(int idVag, Garagem garagem){
         for (int i = 0; i < garagem.qtdade(); i++) {
             ElementoTrem g = garagem.getPorPosicao(i);
-            if(g instanceof Vagao && g.getIdentificador() == idVag){
+            if(g instanceof Vagao || g instanceof VagaoPassageiro && g.getIdentificador() == idVag){
                 return true;
             }
         }
@@ -69,6 +69,7 @@ public class App {
                     int idVag = Integer.parseInt(sc.nextLine());
                     if(tremEdit.getQtdadeVagoes() >= tremEdit.maxVagoesNoTrem()
                     || tremEdit.pesoAtualDoTrem() + ((Vagao) garagem.getPorId(idVag)).getCapacidadeCarga() > tremEdit.pesoMaxNoTrem()
+                    && garagem.getPorId(idVag) instanceof Vagao
                     ){
                         System.out.println("Não é possível adicionar um vagão neste trem.");
                     }else{
@@ -76,8 +77,9 @@ public class App {
                             System.out.println("Vagão não existente, digite um id válido");
                             idVag = Integer.parseInt(sc.nextLine());
                         }
-                        if(garagem.getPorId(idVag).getTrem() == null){
-                            tremEdit.engataVagao(garagem.getPorId(idVag));
+                        
+                        if(garagem.getPorId(idVag).getTrem() == null && garagem.getPorId(idVag) instanceof Vagao){
+                            tremEdit.engataVagao((Vagao)garagem.getPorId(idVag));
                             garagem.getPorId(idVag).setTrem(tremEdit);
                         }else{
                             System.out.println("Vagão já engatado.");
@@ -129,16 +131,20 @@ public class App {
         int index,opcao = 0;
         Scanner sc = new Scanner(System.in);
         System.out.println("BEM VINDO AO SISTEMA DE LOCOMOTIVAS");
-        System.out.println("Defina o número de Vagões:");
+        System.out.println("Defina o número de Vagões de Carga:");
         index = Integer.parseInt(sc.nextLine());
+        int nroV = index;
         writeV(index);
+        System.out.println("Defina o número de Vagões de Passageiros:");
+        index = Integer.parseInt(sc.nextLine());
+        writeVP(index, nroV);
         System.out.println("Defina o número de Locomotivas:");
         index = Integer.parseInt(sc.nextLine());
         writeL(index);
 
         carregaLocomotiva(garagem);
-        carregaVagao(garagem);    
-        
+        carregaVagao(garagem);   
+        carregaVagaoP(garagem); 
         
         do{
 
@@ -291,17 +297,19 @@ public class App {
         Path path = Paths.get(nameComplete);
         int nro = 100, nro2;
 
-        try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(path, StandardCharsets.UTF_8))){
-            for(int i=0;i<index;i++){
-                nro += 1;
-                writer.print(nro+";");
-                nro2 = sorteia.nextInt(50,90);
-                writer.print(nro2+";");
-                nro2 = sorteia.nextInt(10,20);
-                writer.print(nro2+"\n");
+        if(index < 399){
+            try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(path, StandardCharsets.UTF_8))){
+                for(int i=0;i<index;i++){
+                    nro += 1;
+                    writer.print(nro+";");
+                    nro2 = sorteia.nextInt(50,90);
+                    writer.print(nro2+";");
+                    nro2 = sorteia.nextInt(10,20);
+                    writer.print(nro2+"\n");
+                }
+            }catch (IOException x){
+            System.err.format("Erro de E/S: %s%n", x);
             }
-        }catch (IOException x){
-        System.err.format("Erro de E/S: %s%n", x);
         }
     }
     public static void writeV(int index){
@@ -309,7 +317,7 @@ public class App {
         String currDir = Paths.get("").toAbsolutePath().toString();
         String nameComplete = currDir+"\\"+"vagao.dat";
         Path path = Paths.get(nameComplete);
-        int nro =100, nro2;
+        int nro =500, nro2;
 
         try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(path, StandardCharsets.UTF_8))){
             for(int i=0;i<index;i++){
@@ -320,6 +328,45 @@ public class App {
             }
         }catch (IOException x){
         System.err.format("Erro de E/S: %s%n", x);
+        }
+    }
+
+    public static void writeVP(int index, int nroV){
+        Random sorteia = new Random();
+        String currDir = Paths.get("").toAbsolutePath().toString();
+        String nameComplete = currDir+"\\"+"vagaoPassageiro.dat";
+        Path path = Paths.get(nameComplete);
+        int nro =500+nroV, nro2;
+
+        try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(path, StandardCharsets.UTF_8))){
+            for(int i=0;i<index;i++){
+                nro += 1;
+                writer.print(nro+";");
+                nro2 = sorteia.nextInt(65,200);
+                writer.print(nro2+"\n");
+            }
+        }catch (IOException x){
+        System.err.format("Erro de E/S: %s%n", x);
+        }
+    }
+
+    public static void carregaVagaoP(Garagem garagem){
+        String currDir = Paths.get("").toAbsolutePath().toString();
+        String nameComplete = currDir+"\\"+"vagaoPassageiro.dat";
+        Path path = Paths.get(nameComplete);
+        try (Scanner sc = new Scanner(Files.newBufferedReader(path, StandardCharsets.UTF_8))){
+            while (sc.hasNext()){
+                String linha = sc.nextLine();
+
+                String dados[] = linha.split(";");
+
+                int identificador = Integer.parseInt(dados[0]);
+                int capacidadePassageiros = Integer.parseInt(dados[1]);
+                VagaoPassageiro v = new VagaoPassageiro(identificador, capacidadePassageiros);
+                garagem.adicionaGaragem(v);
+            }
+        }catch (IOException x){
+            System.err.format("Erro de E/S: %s%n", x);
         }
     }
 }

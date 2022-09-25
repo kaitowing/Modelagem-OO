@@ -17,7 +17,11 @@ public class Vagao extends ElementoTrem{
 	}
 	@Override
 	public String toString() {
-        return "Vagao [capacidadeCarga=" + capacidadeCarga + ", trem=" + getTrem() + ", identificador="
+		if (livre()){
+			return "Vagao [LIVRE, capacidadeCarga=" + capacidadeCarga +  ", identificador="
+			+ identificador + "]";
+		}
+        return "Vagao [Engatado no trem=" + trem.getIdentificador() + "capacidadeCarga=" + capacidadeCarga +  ", identificador="
         + identificador + "]";
     }
 }

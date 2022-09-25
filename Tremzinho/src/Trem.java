@@ -2,13 +2,11 @@ import java.util.ArrayList;
 
 public class Trem {
     private int identificador;
-    private ArrayList<Locomotiva> locomotivas;
-    private ArrayList<Vagao> vagoes;
+    private ArrayList<ElementoTrem> elementos;
 
     public Trem(int identificador){
         this.identificador = identificador;
-        vagoes = new ArrayList<>();
-        locomotivas = new ArrayList<>();
+        elementos = new ArrayList<>();
     }
 
     public int getIdentificador() {
@@ -16,24 +14,36 @@ public class Trem {
     }
 
     public int getQtdadeLocomotivas() {
-        return locomotivas.size();
+      int contL = 0;
+      for (ElementoTrem elementoTrem : elementos) {
+        if(elementoTrem instanceof Locomotiva){
+          contL++;
+        }
+      }
+        return contL;
     }
 
-    public Locomotiva getLocomotiva(int posicao) {
-      if(posicao >= 0 && posicao < locomotivas.size()){
-        return locomotivas.get(posicao);
+    public ElementoTrem getLocomotiva(int posicao) {
+      if(posicao >= 0 && posicao < getQtdadeLocomotivas()){
+        return elementos.get(posicao);
       }else{
         return null;
       }
     }
 
     public int getQtdadeVagoes() {
-        return vagoes.size();
+      int contV = 0;
+      for (ElementoTrem elementoTrem : elementos) {
+        if(elementoTrem instanceof Vagao || elementoTrem instanceof VagaoPassageiro){
+          contV++;
+        }
+      }
+        return contV;
     }
 
-    public Vagao getVagao(int posicao) {
-      if (posicao >= 0 && posicao < vagoes.size()) {
-        return vagoes.get(posicao);
+    public ElementoTrem getVagao(int posicao) {
+      if (posicao > 0 && posicao < getQtdadeVagoes()) {
+        return elementos.get(posicao + getQtdadeLocomotivas());
       } else {
         return null;
       }
@@ -41,16 +51,18 @@ public class Trem {
 
     public int maxVagoesNoTrem() {
         int totalVagoes = 0;
-        for(Locomotiva locomotiva : locomotivas){
-            totalVagoes = locomotiva.getQtdadeMaxVagoes() + totalVagoes;
+        for(ElementoTrem elemento : elementos){
+          if(elemento instanceof Locomotiva){
+            totalVagoes += ((Locomotiva) elemento).getQtdadeMaxVagoes();
+          }
         }
 
         // for(int i = 0; i < locomotivas.size(); i++){
         //     totalVagoes += locomotivas.get(i).getQtdadeMaxVagoes();
         // }
         
-        if(locomotivas.size() != 1){
-          totalVagoes = (int)(totalVagoes * (1 - (0.1 * (locomotivas.size()-1))));
+        if(getQtdadeLocomotivas() != 1){
+          totalVagoes = (int)(totalVagoes * (1 - (0.1 * (getQtdadeLocomotivas()-1))));
         }
         
         return totalVagoes;
@@ -59,8 +71,10 @@ public class Trem {
     public double pesoMaxNoTrem() {
 		  double pesoMaximo = 0;
 
-      for(Locomotiva locomotiva : locomotivas){
-        pesoMaximo += locomotiva.getPesoMaximo();
+      for(ElementoTrem elemento : elementos){
+        if(elemento instanceof Locomotiva){
+          pesoMaximo += ((Locomotiva)elemento).getPesoMaximo();
+        }
       }
 
 		  return pesoMaximo;
@@ -69,44 +83,46 @@ public class Trem {
     public double pesoAtualDoTrem() {
 		  double pesoAtual = 0;
 
-		  for(Vagao vagao : vagoes){
-			  pesoAtual += vagao.getCapacidadeCarga();
+		  for(ElementoTrem elemento : elementos){
+        if(elemento instanceof Vagao){
+          pesoAtual += ((Vagao)elemento).getCapacidadeCarga();
+        }
       }
       
 		  return pesoAtual;
     }
 
     public boolean engataLocomotiva(ElementoTrem elementoTrem) {
-		if(vagoes.size() > 0){
+		if(getQtdadeVagoes() > 0){
 			return false;
 		}else{
-			locomotivas.add((Locomotiva) elementoTrem);
+			elementos.add((Locomotiva) elementoTrem);
 			return true;
 		}
     }
 
     public boolean engataVagao(ElementoTrem elementoTrem) {
-		if(locomotivas.size() == 0){
+		if(getQtdadeLocomotivas() == 0){
 			return false;
 		}else{
-			vagoes.add((Vagao) elementoTrem);
+			elementos.add((Vagao) elementoTrem);
 			return true;
 		}
     }
 
     public boolean desengataLocomotiva() {
-      if(locomotivas.size() > 1){
-        locomotivas.get(locomotivas.size()-1).setLivre();
-			  locomotivas.remove(locomotivas.size()-1);
+      if(getQtdadeLocomotivas() > 1){
+        elementos.get(getQtdadeLocomotivas()-1).setLivre();
+			  elementos.remove(getQtdadeLocomotivas()-1);
 			return true;
 		}
 		return false;
     }
 
     public boolean desengataVagao() {
-		if(vagoes.size() > 0){
-      vagoes.get(vagoes.size()-1).setLivre();
-			vagoes.remove(vagoes.size()-1);
+		if(getQtdadeVagoes() > 0){
+      elementos.get(getQtdadeVagoes()+getQtdadeLocomotivas()-1).setLivre();
+			elementos.remove(getQtdadeVagoes()+getQtdadeLocomotivas()-1);
 			return true;
 		}
 		return false;
@@ -114,6 +130,6 @@ public class Trem {
 
     @Override
 	public String toString() {
-		return "Trem [identificador=" + identificador + ", locomotivas=" + locomotivas + ", vagoes=" + vagoes + "]";
+		return "Trem [identificador=" + identificador + ", elementos=" + elementos + "]";
 	}
 }

@@ -1,24 +1,28 @@
 public class VagaoPassageiro extends Vagao
 {
-	protected double capacidadePassageiros;
+	protected int capacidadePassageiros;
 
-	public VagaoPassageiro(int identificador, double capacidadePassageiros) 
+	public VagaoPassageiro(int identificador, int capacidadePassageiros) 
 	{
 		super(identificador, capacidadePassageiros);
-		this.capacidadePassageiros = (capacidadePassageiros*1000.0)/70.0;
+		this.capacidadePassageiros = capacidadePassageiros;
 	}
 
-	public double getCapacidadePassageiro() {
+	public int getCapacidadePassageiro() {
 		return capacidadePassageiros;
 	}
 
-	public void setCapacidadePassageiros(double capacidadePassageiros) {
-		this.capacidadePassageiros = capacidadePassageiros;
+	public double getCapacidadeCarga(){
+		return capacidadePassageiros * 75 / 1000;
 	}
 
 	@Override
 	public String toString() {
-		return "VagaoPassageiros [capacidadePassageiros=" + (int) capacidadePassageiros + ", trem=" + trem + ", identificador="
+		if (livre()){
+			return "VagaoPassageiros [LIVRE, capacidadePassageiros=" + capacidadePassageiros + ", identificador="
+			+ identificador + "]";
+		}
+		return "VagaoPassageiros [Engatado no trem=" + trem.getIdentificador() + "capacidadePassageiros=" + capacidadePassageiros + ", identificador="
 		+ identificador + "]";
 	}
 }
