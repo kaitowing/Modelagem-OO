@@ -20,7 +20,8 @@ public class App {
 
     public static boolean vagaoExiste(int idVag, Garagem garagem){
         for (int i = 0; i < garagem.qtdade(); i++) {
-            if(garagem.getPorPosicao(i).getIdentificador() == idVag){
+            ElementoTrem g = garagem.getPorPosicao(i);
+            if(g instanceof Vagao && g.getIdentificador() == idVag){
                 return true;
             }
         }
@@ -29,7 +30,8 @@ public class App {
 
     public static boolean locomotivaExiste(int idLoc, Garagem garagem){
         for (int i = 0; i < garagem.qtdade(); i++) {
-            if(garagem.getPorPosicao(i).getIdentificador() == idLoc){
+            ElementoTrem g = garagem.getPorPosicao(i);
+            if(g instanceof Locomotiva && g.getIdentificador() == idLoc){
                 return true;
             }
         }
@@ -165,9 +167,10 @@ public class App {
                             cont++;
                             System.out.println(garagem.getPorPosicao(i).toString());
                         }
-                        if(cont == 0){
-                            System.out.println("Não há locomotivas livres");
-                        }
+                    }
+                    if(cont == 0){
+                        System.out.println("Não há locomotivas livres");
+                        break;
                     }
     
                     System.out.println("Informe o identificador da primeira locomotiva:");
